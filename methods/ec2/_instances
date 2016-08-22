@@ -4,6 +4,10 @@ function f_run_instances(){
   aws ec2 run-instances --image-id ${v_ami_id} --key-name ${v_key_name} --security-groups ${v_security_group} --instance-type ${v_instance_type} --count 1 >> ${v_params}
 }
 
+function f_tag_instance(){
+  aws ec2 create-tags --resources $(f_get_instance_id) --tags ${v_tags}
+}
+
 function f_get_instance_id(){
   grep -i instanceid ${v_params} | awk -F"\"" '{print $4}'
 }
@@ -96,7 +100,7 @@ function f_test_ssh(){
     echo -e "\t\t\t\tSSH Available"
   else
     _ssh_availability=0
-    echo -e "\t\t\t\tSSH Unavailable"
+    echo -e "\t\t\t\tpending"
   fi
   exec 2>&3
 }

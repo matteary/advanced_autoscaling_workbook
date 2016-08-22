@@ -31,8 +31,11 @@ function f_deploy(){
   # This will create an ec2 instance
   echo -e "\t\tCreating instance..."
   f_run_instances
+  echo -e "\t\t\tNaming instance..."
+  f_tag_instance
   echo -e "\t\t\tWaiting for instance..."
   f_wait_for_instance_state "running"
+
 
   # This will install and enable apache with a generic index.html
   echo -e "\t\t\tWaiting for SSH access..."
@@ -58,6 +61,10 @@ function f_deploy(){
   f_create_autoscaler_config
   echo -e "\t\t\tCreating Autoscaler group..."
   f_create_autoscaler_group
+
+  # Terminate uneeded instance
+  echo -e "\t\tTerminating original instance"
+  f_terminate_instances
 }
 
 function f_print_help(){

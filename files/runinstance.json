@@ -1,0 +1,9 @@
+{
+    "DryRun": false,
+    "Tags": [
+        {
+            "Value": "Advanced AutoScaling Workbook",
+            "Key": "Name"
+        }
+    ]
+}

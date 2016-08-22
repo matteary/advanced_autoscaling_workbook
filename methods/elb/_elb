@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function f_create_elb(){
-  aws elb create-load-balancer --load-balancer-name ${v_elb_name} --security-groups $(f_get_instance_group_id) --listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" --subnets $(f_get_instance_subnet_id) >> /dev/null
+  aws elb create-load-balancer --load-balancer-name ${v_elb_name} --security-groups $(f_get_instance_group_id) --listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" --subnets $(f_get_instance_subnet_id) --tags "${v_tags}" >> /dev/null
 }
 
 function f_get_elb_canonical(){
