@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+function f_create_cloudwatch_alarm(){
+  aws cloudwatch put-metric-alarm --alarm-name "${1}" --metric-name CPUUtilization --namespace AWS/EC2 --statistic Average --period 120 --threshold 80 --comparison-operator GreaterThanOrEqualToThreshold --dimensions "Name=AutoScalingGroupName,Value=${v_autoscaler_group}" --evaluation-periods 2 --alarm-actions "${2}"
+}

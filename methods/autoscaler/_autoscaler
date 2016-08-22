@@ -5,7 +5,7 @@ function f_create_autoscaler_config(){
 }
 
 function f_create_autoscaler_group(){
-  aws autoscaling create-auto-scaling-group --auto-scaling-group-name ${v_autoscaler_group} --launch-configuration-name ${v_autoscaler_config} --vpc-zone-identifier $(f_get_instance_subnet_id) --min-size 1 --max-size 3 --desired-capacity 2 --load-balancer-names ${v_elb_name}
+  aws autoscaling create-auto-scaling-group --auto-scaling-group-name ${v_autoscaler_group} --launch-configuration-name ${v_autoscaler_config} --vpc-zone-identifier $(f_get_instance_subnet_id) --min-size 1 --max-size 3 --desired-capacity 2 --load-balancer-names ${v_elb_name} --tags "${v_tags}"
 }
 
 function f_delete_autoscaler(){
@@ -15,4 +15,12 @@ function f_delete_autoscaler(){
   sleep 20
   aws autoscaling delete-auto-scaling-group --auto-scaling-group-name ${v_autoscaler_group}
   aws autoscaling delete-launch-configuration --launch-configuration-name ${v_autoscaler_config}
+}
+
+function f_create_autoscale_policy(){
+  aws autoscaling put-scaling-policy --policy-name "${1}" --metric-aggregation-type Average --auto-scaling-group-name ${v_autoscaler_group} --policy-type StepScaling --step-adjustments ${2} --adjustment-type ChangeInCapacity --output text
+}
+
+function f_delete_autoscale_policy(){
+  # test
 }

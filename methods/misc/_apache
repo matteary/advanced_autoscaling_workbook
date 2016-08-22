@@ -2,7 +2,7 @@
 
 function f_yum_install_httpd(){
   sleep 5
-  ssh -i ~/.ssh/${v_key_name}.pem -o "StrictHostKeyChecking no" ec2-user@`f_get_instance_public_dns` sudo yum update >> /dev/null
+  #ssh -i ~/.ssh/${v_key_name}.pem -o "StrictHostKeyChecking no" ec2-user@`f_get_instance_public_dns` sudo yum update >> /dev/null
   ssh -i ~/.ssh/${v_key_name}.pem -o "StrictHostKeyChecking no" ec2-user@`f_get_instance_public_dns` sudo yum -y install httpd >> /dev/null
 }
 

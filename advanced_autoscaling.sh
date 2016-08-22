@@ -62,6 +62,16 @@ function f_deploy(){
   echo -e "\t\t\tCreating Autoscaler group..."
   f_create_autoscaler_group
 
+  # Create Autoscaler Policies
+  echo -e "\t\t\tCreating Autoscaler policies..."
+  f_create_autoscale_policy "${v_autoscaler_policy_name_scalein}" "${v_autoscaler_policy_scalein}" > ${_srcDir}/cache/as_policy_scalein.arn
+  f_create_autoscale_policy "${v_autoscaler_policy_name_scaleout}" "${v_autoscaler_policy_scaleout}" > ${_srcDir}/cache/as_policy_scaleout.arn
+
+  # Create CloudWatch alarm-actions
+  echo -e "\t\tCreating CloudWatch alarms..."
+  f_create_cloudwatch_alarm "${v_cloudwatch_alarm_name_scalein}" "`cat ${_srcDir}/cache/as_policy_scalein.arn`"
+  f_create_cloudwatch_alarm "${v_cloudwatch_alarm_name_scaleout}" "`cat ${_srcDir}/cache/as_policy_scaleout.arn`"
+
   # Terminate uneeded instance
   echo -e "\t\tTerminating original instance"
   f_terminate_instances

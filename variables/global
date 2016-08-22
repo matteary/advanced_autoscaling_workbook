@@ -3,10 +3,11 @@
 v_key="advanced-autoscale"
 v_params=${_srcDir}/cache/${v_key}_params.json
 v_instance=${_srcDir}/cache/${v_key}_instance
+v_key_name="${USER}-aws-${v_key}-keypair"
+v_tags="Key=Name,Value=${v_instance_name}"
 
 ## EC2 Variables
 v_region="us-west-2"
-v_key_name="${USER}-aws-${v_key}-keypair"
 v_security_group="${USER}-${v_key}-security-group"
 v_security_group_desc="My `echo ${v_key} | awk '{print toupper($0)}'` Security Group"
 v_instance_name="${USER}-${v_key}-instance"
@@ -16,7 +17,18 @@ v_allowed_ports="22 80"
 v_allowed_nets="0.0.0.0/0"
 v_ip_proto="tcp"
 v_ami_name="${v_key}-ami"
+
+# ELB Variables
 v_elb_name="${v_key}-elb"
+
+# Autoscaler Variables
 v_autoscaler_config="${v_key}-autoscaler_launch_config"
 v_autoscaler_group="${v_key}-autoscaler-group"
-v_tags="Key=Name,Value=${v_instance_name}"
+v_autoscaler_policy_name_scalein="Scale In"
+v_autoscaler_policy_name_scaleout="Scale Out"
+v_autoscaler_policy_scalein="MetricIntervalUpperBound=-10.0,ScalingAdjustment=-2 MetricIntervalUpperBound=0.0,MetricIntervalLowerBound=-10.0,ScalingAdjustment=-1"
+v_autoscaler_policy_scaleout="MetricIntervalLowerBound=20.0,ScalingAdjustment=1 MetricIntervalUpperBound=20.0,MetricIntervalLowerBound=0.0,ScalingAdjustment=0"
+
+# CloudWatch Variables
+v_cloudwatch_alarm_name_scalein="Advanced Autoscale Workbook Scale In"
+v_cloudwatch_alarm_name_scaleout="Advanced Autoscale Workbook Scale Out"
