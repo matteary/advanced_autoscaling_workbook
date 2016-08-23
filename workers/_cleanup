@@ -16,10 +16,10 @@ function f_cleanup(){
   f_delete_elb
   echo -e "\t\tDeleting CloudWatch alarms..."
   f_delete_cloudwatch_alarms "${v_cloudwatch_alarm_name_scaleout} ${v_cloudwatch_alarm_name_scalein}"
-  echo -e "\t\tDeleting Autoscale policies..."
+  echo -e "\t\tDeleting Autoscaler..."
+  echo -e "\t\t\tDeleting Autoscale policies..."
   f_delete_autoscaler_policy "${v_autoscaler_policy_name_scaleout}"
   f_delete_autoscaler_policy "${v_autoscaler_policy_name_scalein}"
-  echo -e "\t\tDeleting Autoscaler..."
   f_delete_autoscaler_group
   f_delete_autoscaler_config
   echo -e "\t\tDeleting security group..."

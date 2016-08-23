@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
 function f_print_help(){
-  echo -e "\n\tUsage: ${_srcDir}/`basename \"$0\"` [ --deploy | --cleanup ]\n"
+  echo -e "\n\tUsage: ./`basename \"$0\"` [ --deploy | --cleanup | --increase-traffic | --help ]\n"
+  echo -e "\t\t--deploy\t\tDeploys the Advanced Autocaling Workbook environment"
+  echo -e "\t\t--cleanup\t\tTears down the Advance Autoscaling Workbook environment"
+  echo -e "\t\t--increase-traffic\tUse Apache's benchmark tool to simulate load to websites"
+  echo -e "\t\t--help\t\t\tDisplays this message\n"
 }

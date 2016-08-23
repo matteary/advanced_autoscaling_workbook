@@ -67,6 +67,8 @@ function f_deploy(){
   # Display ELB DNS Name
   echo -e "\n\tYou can now access the following website;"
   echo -e "\n\t\thttp://$(f_get_elb_dnsname)"
+
+  # Display Apache Load Balancing option
   echo -e "\n\tYou can test the autoscaler by running this script again with the following options;"
-  echo -e "\n\t\tIncrease traffic: ./`basename \"$0\"` --increase-traffic"
+  echo -e "\n\t\tIncrease traffic: ./`basename \"$0\"` --increase-traffic\n"
 }

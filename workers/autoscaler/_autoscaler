@@ -48,9 +48,14 @@ function f_get_autoscaler_group_state(){
 
 function f_wait_for_autoscaler_group_deletion(){
   while true; do
-    until [ "$(f_get_autoscaler_group_state)" == '' ]; do
+    v_as_group_state="null"
+    until [ "${v_as_group_state}" == '' ]; do
       sleep ${v_wait_seconds}
-      f_get_autoscaler_group_state
+      local v_as_group_state="$(f_get_autoscaler_group_state)"
+      exec 3>&2
+      exec 2> /dev/null
+      f_delete_autoscaler_group
+      exec 2>&3
       echo -e "\t\t\t\tpending"
     done
     break

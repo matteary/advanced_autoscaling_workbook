@@ -124,9 +124,10 @@ function f_wait_for_instance_state(){
 
 function f_wait_for_snapshot_state(){
   while true; do
-    until [ "$(f_get_snapshot_state)" == "${1}" ]; do
+    until [ "${v_snapshot_state}" == "${1}" ]; do
       sleep ${v_wait_seconds}
-      echo -e "\t\t\t\t$(f_get_snapshot_state)"
+      local v_snapshot_state=$(f_get_snapshot_state) > /dev/null
+      echo -e "\t\t\t\tpending"
     done
     break
   done
