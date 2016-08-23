@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+function f_print_help(){
+  echo -e "\n\tUsage: ${_srcDir}/`basename \"$0\"` [ --deploy | --cleanup ]\n"
+}

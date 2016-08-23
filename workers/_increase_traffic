@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+function f_increase_traffic(){
+  ab -c 1000 -n 10000 http://$(f_get_elb_dnsname)/index.html
+}

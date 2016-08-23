@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+function f_create_autoscaler_config(){
+  aws autoscaling create-launch-configuration --launch-configuration-name ${v_autoscaler_config} --image-id $(f_get_ami_id) --instance-type ${v_instance_type} --key ${v_key_name} --security-groups $(f_get_instance_group_id)
+}
+
+function f_create_autoscaler_group(){
+  aws autoscaling create-auto-scaling-group --auto-scaling-group-name ${v_autoscaler_group} --launch-configuration-name ${v_autoscaler_config} --vpc-zone-identifier $(f_get_instance_subnet_id) --min-size ${1} --max-size ${2} --desired-capacity ${3} --load-balancer-names ${v_elb_name} --tags "${v_tag_autoscaler_group}"
+}
+
+function f_create_autoscaler_policy(){
+  aws autoscaling put-scaling-policy --policy-name "${1}" --metric-aggregation-type Average --auto-scaling-group-name ${v_autoscaler_group} --policy-type StepScaling --step-adjustments ${2} --adjustment-type ChangeInCapacity --output text
+}
+
+function f_delete_autoscaler_group(){
+  aws autoscaling update-auto-scaling-group --auto-scaling-group-name ${v_autoscaler_group} --max-size 0 --min-size 0
+  if [ "$(f_get_autoscaler_instances)" != '' ]; then
+    echo -e "\t\t\tWaiting for Autoscaler instances to terminate..."
+    f_wait_for_autoscaler_instance_terminations
+  fi
+  sleep ${v_wait_seconds}
+  aws autoscaling delete-auto-scaling-group --auto-scaling-group-name ${v_autoscaler_group}
+  #aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names ${v_autoscaler_group}
+  # Need a way to detect instance terminations
+  #sleep 20
+  #aws autoscaling delete-launch-configuration --launch-configuration-name ${v_autoscaler_config}
+}
+
+function f_delete_autoscaler_config(){
+  echo -e "\t\t\tWaiting for Autoscaler group deletion..."
+  if [[ $(aws autoscaling describe-auto-scaling-groups --query "AutoScalingGroups[?AutoScalingGroupName=='${v_autoscaler_group}']" --output text) != '' ]]; then
+    f_wait_for_autoscaler_group_deletion
+  fi
+  aws autoscaling delete-launch-configuration --launch-configuration-name ${v_autoscaler_config}
+}
+
+function f_delete_autoscaler_policy(){
+  aws autoscaling delete-policy --policy-name "${1}" --auto-scaling-group-name ${v_autoscaler_group}
+}
+
+function f_get_autoscaler_instances(){
+  aws autoscaling describe-auto-scaling-instances --query "AutoScalingInstances[?AutoScalingGroupName=='${v_autoscaler_group}'].InstanceId[]" --output text
+}
+
+function f_get_autoscaler_group_state(){
+  aws autoscaling describe-auto-scaling-groups --query "AutoScalingGroups[?AutoScalingGroupName=='${v_autoscaler_group}']" --output text
+}
+
+function f_wait_for_autoscaler_group_deletion(){
+  while true; do
+    until [ "$(f_get_autoscaler_group_state)" == '' ]; do
+      sleep ${v_wait_seconds}
+      f_get_autoscaler_group_state
+      echo -e "\t\t\t\tpending"
+    done
+    break
+  done
+}
+
+function f_wait_for_autoscaler_instance_terminations(){
+  for i in `f_get_autoscaler_instances`; do
+    f_wait_for_instance_state "terminated" ${i}
+  done
+}

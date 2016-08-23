@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+function f_create_cloudwatch_alarms(){
+  aws cloudwatch put-metric-alarm --alarm-name "${1}" --metric-name "${2}" --namespace "${3}" --statistic Average --period "${4}" --threshold "${5}" --comparison-operator "${6}" --dimensions "Name=AutoScalingGroupName,Value=${v_autoscaler_group}" --evaluation-periods "${7}" --alarm-actions "${8}"
+}
+
+function f_delete_cloudwatch_alarms(){
+  aws cloudwatch delete-alarms --alarm-names "${1}"
+}
