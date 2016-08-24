@@ -8,7 +8,7 @@
 <p>Usage: ./advanced_autoscaling.sh [ --deploy | --cleanup | --increase-traffic | --help ]</p>
 
 <p>--deploy&emsp;&emsp;&emsp;&emsp;&emsp;Deploys the Advanced Autocaling Workbook environment</p>
-<p>--cleanup&emsp;&emsp;&emsp;&emsp;Tears down the Advance Autoscaling Workbook environment</p>
-<p>--increase-traffic	Use Apache's benchmark tool to simulate load to websites</p>
-<p>--help		Displays this message</p>
+<p>--cleanup&emsp;&emsp;&emsp;&emsp; Tears down the Advance Autoscaling Workbook environment</p>
+<p>--increase-traffic&emsp; Use Apache's benchmark tool to simulate load to websites</p>
+<p>--help&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Displays this message</p>
 
