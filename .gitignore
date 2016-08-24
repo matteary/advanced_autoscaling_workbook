@@ -1,0 +1,4 @@
+cache/advanced-autoscale_params.json
+cache/as_policy_scalein.arn
+cache/as_policy_scaleout.arn
+cache/autoscaler_instances.temp
