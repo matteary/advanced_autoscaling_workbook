@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function f_create_autoscaler_config(){
-  aws autoscaling create-launch-configuration --launch-configuration-name ${v_autoscaler_config} --image-id $(f_get_ami_id) --instance-type ${v_instance_type} --key ${v_key_name} --security-groups $(f_get_instance_group_id)
+  aws autoscaling create-launch-configuration --launch-configuration-name ${v_autoscaler_config} --image-id $(f_get_image_id) --instance-type ${v_instance_type} --key ${v_key_name} --security-groups $(f_get_instance_group_id)
 }
 
 function f_create_autoscaler_group(){
