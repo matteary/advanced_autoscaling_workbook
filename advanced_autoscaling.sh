@@ -22,6 +22,7 @@ if [ ! -f ${_srcDir}cache ]; then mkdir ${_srcDir}/cache; fi
 . ${_srcDir}/workers/autoscaler/_autoscaler
 . ${_srcDir}/workers/misc/_apache
 . ${_srcDir}/workers/misc/_tmux
+. ${_srcDir}/workers/misc/_cpu_load
 . ${_srcDir}/workers/cloudwatch/_cloudwatch
 
 ### Script Begin ###
