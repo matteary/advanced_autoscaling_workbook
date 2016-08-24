@@ -8,6 +8,8 @@
 _srcDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . ${_srcDir}/variables/global
 
+if [ ! -f ${_srcDir}cache ]; then mkdir ${_srcDir}/cache; fi
+
 ## workers
 . ${_srcDir}/workers/_deploy
 . ${_srcDir}/workers/_cleanup
