@@ -34,7 +34,7 @@ function f_get_image_snapshots(){
 }
 
 function f_get_image_state(){
-  aws ec2 describe-images --image-ids $(f_get_image_id) --query "Images[].[State]" --output text
+  aws ec2 describe-images --owners self --image-ids $(f_get_image_id) --query "Images[].[State]" --output text
 }
 
 function f_get_instance_group_id(){
@@ -46,7 +46,7 @@ function f_get_instance_id(){
 }
 
 function f_get_instance_public_dns(){
-  aws ec2 describe-instances --instance-ids $(f_get_instance_id) --query 'Reservations[].Instances[].[PublicDnsName]' --output text
+  aws ec2 describe-instances --instance-ids "${1}" --query 'Reservations[].Instances[].[PublicDnsName]' --output text
 }
 
 function f_get_instance_state(){
@@ -80,7 +80,7 @@ function f_terminate_instances(){
 function f_test_ssh(){
   exec 3>&2
   exec 2> /dev/null
-  ssh -i ~/.ssh/${v_key_name}.pem -o "StrictHostKeyChecking no" ec2-user@`f_get_instance_public_dns` echo ""
+  ssh -i ~/.ssh/${v_key_name}.pem -o "StrictHostKeyChecking no" ec2-user@`f_get_instance_public_dns $(f_get_instance_id)` echo ""
   if [ $? -eq 0 ]; then
     _ssh_availability=1
     echo -e "\t\t\t\tSSH Available"
@@ -101,9 +101,9 @@ function f_verify_instance_terminated(){
   done
 }
 
-function f_wait_for_image(){
+function f_wait_for_image_state(){
   while true; do
-    until [ "$(f_get_image_state)" == 'available' ]; do
+    until [ "$(f_get_image_state)" == "${1}" ]; do
       sleep ${v_wait_seconds}
       echo -e "\t\t\t\t$(f_get_image_state)"
     done

@@ -39,7 +39,7 @@ function f_delete_autoscaler_policy(){
 }
 
 function f_get_autoscaler_instances(){
-  aws autoscaling describe-auto-scaling-instances --query "AutoScalingInstances[?AutoScalingGroupName=='${v_autoscaler_group}'].InstanceId[]" --output text
+  aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names ${v_autoscaler_group} --query "AutoScalingGroups[].Instances[].[InstanceId]" --output text
 }
 
 function f_get_autoscaler_group_state(){

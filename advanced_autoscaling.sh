@@ -19,25 +19,30 @@ _srcDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . ${_srcDir}/workers/elb/_elb
 . ${_srcDir}/workers/autoscaler/_autoscaler
 . ${_srcDir}/workers/misc/_apache
+. ${_srcDir}/workers/misc/_tmux
 . ${_srcDir}/workers/cloudwatch/_cloudwatch
 
 ### Script Begin ###
 while true; do
   case $1 in
-    --deploy* )
+    --[Dd][Ee][Pp][Ll][Oo][Yy] )
       echo -e "\n\tDeploying Advanced AutoScaling environment...\n"
       echo -e "\t\tThis might take a few minutes, go grab a cofee.\n"
       f_deploy
       break
       ;;
-    --cleanup* )
+    --[Cc][Ll][Ee][Aa][Nn][Uu][Pp] )
       echo -e "\n\tTearing down Advanced AutoScaling environment...\n"
       f_cleanup
       break
       ;;
-    --increase-traffic* )
+    --[Ii][Nn][Cc][Rr][Ee][Aa][Ss][Ee]-[Ll][Oo][Aa][Dd] )
       echo -e "\n\tIncreasing traffic to $(f_get_elb_dnsname)"
       f_increase_traffic
+      break
+      ;;
+    --[Hh][Ee][Ll][Pp] )
+      f_print_help
       break
       ;;
     * )

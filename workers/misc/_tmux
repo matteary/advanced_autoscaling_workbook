@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+function f_yum_install_tmux(){
+  sleep 5
+  ssh -i ~/.ssh/${v_key_name}.pem -o "StrictHostKeyChecking no" ec2-user@$(f_get_instance_public_dns $(f_get_instance_id)) sudo yum -y install tmux >> /dev/null
+}
+
+function f_tmux_script_to_instance(){
+  scp -i ~/.ssh/${v_key_name}.pem -o "StrictHostKeyChecking no" ${_srcDir}/files/hit_cpu.sh ec2-user@$(f_get_instance_public_dns $(f_get_instance_id)):/home/ec2-user/
+  ssh -i ~/.ssh/${v_key_name}.pem -o "StrictHostKeyChecking no" ec2-user@$(f_get_instance_public_dns $(f_get_instance_id)) sudo chmod 755 /home/ec2-user/hit_cpu.sh
+
+}

@@ -30,13 +30,13 @@ v_autoscaler_group_desired_size=2
 v_autoscaler_policy_name_scalein="Scale In"
 v_autoscaler_policy_name_scaleout="Scale Out"
 v_autoscaler_policy_scalein="MetricIntervalUpperBound=-10.0,ScalingAdjustment=-2 MetricIntervalUpperBound=0.0,MetricIntervalLowerBound=-10.0,ScalingAdjustment=-1"
-v_autoscaler_policy_scaleout="MetricIntervalLowerBound=20.0,ScalingAdjustment=1 MetricIntervalUpperBound=20.0,MetricIntervalLowerBound=0.0,ScalingAdjustment=0"
+v_autoscaler_policy_scaleout="MetricIntervalLowerBound=20.0,ScalingAdjustment=2 MetricIntervalUpperBound=20.0,MetricIntervalLowerBound=0.0,ScalingAdjustment=1"
 
 # CloudWatch Variables
 v_cloudwatch_scaleout_alarm_name="Advanced Autoscale Workbook Scale Out"
 v_cloudwatch_scaleout_period=60
-v_cloudwatch_scaleout_threshold=50
-v_cloudwatch_scaleout_eval_periods=2
+v_cloudwatch_scaleout_threshold=40
+v_cloudwatch_scaleout_eval_periods=1
 v_cloudwatch_scaleout_metric_name="CPUUtilization"
 v_cloudwatch_scaleout_comp_operator="GreaterThanOrEqualToThreshold"
 v_cloudwatch_scaleout_namespace="AWS/EC2"

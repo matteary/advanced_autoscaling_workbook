@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+function f_start_load_cpu(){
+  for i in $(f_get_autoscaler_instances); do
+    echo $i >> ${_srcDir}/cache/autoscaler_instances.temp
+    #for j in {1..20}; do
+      #ssh -i ~/.ssh/${v_key_name}.pem -o "StrictHostKeyChecking no" ec2-user@$(f_get_instance_public_dns $i) sudo tmux -c yes > /dev/null &
+    #done
+    ssh -i ~/.ssh/${v_key_name}.pem -o "StrictHostKeyChecking no" ec2-user@$(f_get_instance_public_dns $i) sudo tmux -c /home/ec2-user/hit_cpu.sh &
+  done
+}
+
+function f_stop_load_cpu(){
+  for i in `cat ${_srcDir}/cache/autoscaler_instances.temp`; do
+    ssh -i ~/.ssh/${v_key_name}.pem -o "StrictHostKeyChecking no" ec2-user@$(f_get_instance_public_dns $i) sudo killall yes
+  done
+}
+
+function f_induce_cpu_load(){
+  echo -e "\n\tIt will take a few minutes to keep the CPU busy to trigger the CloudWatch alarm..."
+  echo -e "\t\tExciting CPUs for 5 minutes..."
+  f_start_load_cpu
+  sleep 300
+  f_stop_load_cpu
+}

@@ -22,16 +22,22 @@ function f_deploy(){
   # This will install and enable apache with a generic index.html
   echo -e "\t\t\tWaiting for SSH access..."
   f_wait_for_ssh
-  echo -e "\t\tConfiguring Apache on instance..."
+  echo -e "\t\t\tConfiguring Apache on instance..."
   f_yum_install_httpd
   f_create_index_html
   f_enable_start_httpd
+
+  # This will install tmux for use in detached commands
+  echo -e "\t\t\tInstalling tmux on instance..."
+  f_yum_install_tmux
+  echo -e "\t\t\t\tPlacing tmux script..."
+  f_tmux_script_to_instance
 
   # This will create an Amazon Machine Image (AMI) for use with an ELB
   echo -e "\t\tCreating AMI..."
   f_create_image
   echo -e "\t\t\tWaiting for AMI creation..."
-  f_wait_for_image
+  f_wait_for_image_state "available"
   echo -e "\t\t\tTagging AMI..."
   f_tag_resources $(f_get_image_id) ${v_tag_image}
   echo -e "\t\t\tWaiting for Snapshot creation..."
@@ -70,5 +76,5 @@ function f_deploy(){
 
   # Display Apache Load Balancing option
   echo -e "\n\tYou can test the autoscaler by running this script again with the following options;"
-  echo -e "\n\t\tIncrease traffic: ./`basename \"$0\"` --increase-traffic\n"
+  echo -e "\n\t\tIncrease CPUUtilization: ./`basename \"$0\"` --increase-load\n"
 }
