@@ -9,6 +9,6 @@
 
 <p>--deploy&emsp;&emsp;&emsp;&emsp;&emsp;Deploys the Advanced Autocaling Workbook environment</p>
 <p>--cleanup&emsp;&emsp;&emsp;&emsp; Tears down the Advance Autoscaling Workbook environment</p>
-<p>--increase-load&emsp;Increases CPU workload to trigger CloudWatch alarms</p>
+<p>--increase-load&emsp;&emsp;Increases CPU workload to trigger CloudWatch alarms</p>
 <p>--help&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Displays this message</p>
 
